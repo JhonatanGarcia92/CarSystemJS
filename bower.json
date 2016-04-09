@@ -1,16 +1,17 @@
 {
   "name": "Carro",
   "description": "Projeto Carro",
-  "main": "app",
+  "main": "aplicacao.html",
   "moduleType": [],
   "keywords": [
-    "datepicker",
-    "carro"
+    "cars",
+    "carro",
+    "lista"
   ],
   "authors": [
     "Jhonatan Garcia"
   ],
-  "license": "MIt",
+  "license": "MIT",
   "homepage": "",
   "private": true,
   "ignore": [
@@ -23,8 +24,4 @@
   "dependencies": {
     "bootstrap": "^3.3.6"
   }
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/eternicode/bootstrap-datepicker.git"
-  },
 }
