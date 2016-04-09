@@ -1,6 +1,7 @@
 function SistemaCarro(){
   codCarro = 0;
-  idSimulacao = 0; 
+  idSimulacao = 0;
+  var resultadosDoGoogle = null;
   
   function Carro(mar, mod, ano, cor, pla, valDi, valKm){
     codCarro++;
@@ -38,9 +39,6 @@ function SistemaCarro(){
     this.dateFim = dtFim;
     this.origem = ori;
     this.destino = dst;
-    this.toString = function(){
-      return this.nomeCliente + ' ' + this.opcao;
-    }
   }
 
   function novoCarro(event){
@@ -83,7 +81,9 @@ function SistemaCarro(){
             return false;
     }
     return true;
-  } 
+  }
+
+
 
   function imprimeListaCarros() {
     var lista = document.getElementById('listaCarros');
@@ -97,7 +97,7 @@ function SistemaCarro(){
       // copia.querySelector('.ano').textContent.cloneNode(true);
       // copia.querySelector('.placa').textContent.cloneNode(true);
       // copia.querySelector('.cor').textContent.cloneNode(true);
-      // TPC.replaceWithData(copia, carro);
+      TPC.replaceWithData(copia, carro);
       lista.appendChild(copia);
     }
   }
@@ -132,44 +132,46 @@ function SistemaCarro(){
 
   
   // Geolocalização
-  function getLocation()
-  {
-    if (navigator.geolocation)
-    {
-      navigator.geolocation.getCurrentPosition(showPosition,showError);
+  navigator.geolocation.getCurrentPosition(successCallback,errorCallback,options);
+
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 1000,
+    maximumAge: 0
+  };
+
+  var successCallback = function(position){
+    console.log(position);
+    latitude = position.cords.latitude;
+    longitude = position.cords.longitude;
+    var client= new XMLHttpRequest();
+
+    var urlGMaps = 'http://maps.googleapis.com/maps/api/geocode/json?latlng='+latitude+','+longitude+'&sensor=false;';
+
+    client.open('GET', urlGMaps);
+    client.onreadystatechange = function (response) {
+      console.log(this.readyState);
+      if (this.readyState ===4){
+        resultadosDoGoogle = JSON.parse(this.responseText);
+        console.log(resultadosDoGoogle.g)
+      }
     }
-    else
-    {
-      x.innerHTML="Geolocation is not supported by this browser.";
-    }
+    client.send();
   }
- 
-  function showPosition(position)
-  {
-    var latlon=position.coords.latitude+","+position.coords.longitude;
-   
-    var img_url="http://maps.googleapis.com/maps/api/staticmap?center="
-    +latlon+"&zoom=14&size=400x300&sensor=false";
-    
-    document.getElementById("mapholder").innerHTML="<img src='"+img_url+"'>";
-  }
- 
-  function showError(error)
-  {
-    switch(error.code)
-    {
-      case error.PERMISSION_DENIED:
-        x.innerHTML="Usuário rejeitou a solicitação de Geolocalização."
+
+  var errorCallback = function(error){
+    var errorMessage = 'Unknown error';
+    switch(error.code) {
+      case 1:
+        errorMessage = 'Permission denied';
         break;
-      case error.POSITION_UNAVAILABLE:
-        x.innerHTML="Localização indisponível."
+      case 2:
+        errorMessage = 'Position unavailable';
         break;
-      case error.TIMEOUT:
-        x.innerHTML="O tempo da requisição expirou."
-        break;
-      case error.UNKNOWN_ERROR:
-        x.innerHTML="Algum erro desconhecido aconteceu."
+      case 3:
+        errorMessage = 'Timeout';
         break;
     }
-  }
+    alert(errorMessage);
+  };
 }
