@@ -30,49 +30,49 @@
                   <br>
                   <label class="col-md-1 control-label" for="fabricante">Marca</label>
                   <div class="col-md-11">
-                    <input id="fabricante" name="fabricante" type="text" placeholder="Marca" class="form-control input-md" required="" maxlength="50"><br>
+                    <input id="fabricante" name="fabricante" value="teste" type="text" placeholder="Marca" class="form-control input-md" required="" maxlength="50"><br>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-md-1 control-label" for="modelo">Modelo</label>
                   <div class="col-md-11">
-                    <input id="modelo" name="modelo" type="text" placeholder="Modelo" class="form-control input-md" required="" maxlength="50"><br>
+                    <input id="modelo" name="modelo" value="teste" type="text" placeholder="Modelo" class="form-control input-md" required="" maxlength="50"><br>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-md-1 control-label" for="ano">Ano</label>
                   <div class="col-md-11">
-                   <input id="ano" name="ano" type="text" placeholder="Ano" class="form-control input-md" required="" maxlength="4"><br>
+                   <input id="ano" name="ano" type="text" value="teste" placeholder="Ano" class="form-control input-md" required="" maxlength="4"><br>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-md-1 control-label" for="cor">Cor</label>
                   <div class="col-md-11">
-                    <input id="cor" name="cor" type="text" placeholder="Cor" class="form-control input-md" required="" maxlength="20"><br>
+                    <input id="cor" name="cor" type="text" value="teste" placeholder="Cor" class="form-control input-md" required="" maxlength="20"><br>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-md-1 control-label" for="placa">Placa</label>
                   <div class="col-md-11">
-                    <input id="placa" name="placa" type="text" placeholder="Placa" class="form-control input-md" required="" minlength="8" maxlength="8"><br>
+                    <input id="placa" name="placa" type="text" value="teste" placeholder="Placa" class="form-control input-md" required="" minlength="8" maxlength="8"><br>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-md-1 control-label" for="valorDiaria">Valor da Diária</label>
                   <div class="col-md-3">
-                    <input id="valorDiaria" name="valorDiaria" type="number" step="0.01"   placeholder="Valor da Diária" class="form-control input-md" required=""><br>
+                    <input id="valorDiaria" name="valorDiaria" value="20" type="number" step="0.01"   placeholder="Valor da Diária" class="form-control input-md" required=""><br>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label class="col-md-1 control-label" for="valorKm">Valor Km</label>
                   <div class="col-md-3">
-                    <input id="valorKm" name="valorKm" type="number" step="0.01" placeholder="Valor Km" class="form-control input-md" required=""><br>
+                    <input id="valorKm" name="valorKm" type="number" value="20" step="0.01" placeholder="Valor Km" class="form-control input-md" required=""><br>
                   </div>
                 </div>
 
@@ -83,7 +83,15 @@
                 <br><br>
                 <table class="table table-hover" id="tblistaCarros">
                   <thead>
-
+                    <tr>
+                      <th>Marca</th>
+                      <th>Modelo</th>
+                      <th>Ano</th>
+                      <th>Placa</th>
+                      <th>Cor</th>
+                      <th>Valor Diaria</th>
+                      <th>Valor Km</th>
+                    </tr>
                   </thead>
                   <tbody>
 
@@ -94,7 +102,7 @@
 
                   <tr>
                     <td scope="row">1</td>
-                    <td class="marca">{{fabricante}}</td>
+                    <td class="fabricante">{{fabricante}}</td>
                     <td class="modelo">{{modelo}}</td>
                     <td class="ano">{{ano}}</td>
                     <td class="placa">{{placa}}</td>

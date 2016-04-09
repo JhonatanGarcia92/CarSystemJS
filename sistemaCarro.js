@@ -12,7 +12,7 @@ var AppCarro = (function SistemaCarro(){
     this.modelo = mod;
     this.ano = ano;
     this.cor = cor;
-    this.valorDiaria = vlrdia || 150.00;
+    this.valorDiari = vlrdia || 150.00;
     this.valorKm = vlrkm || 2.5;
     this.placa = (function(str){
       return str.toUpperCase();
