@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="feb6d359-e1ff-475c-9057-d61473c6435c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/aplicacao.html" afterPath="$PROJECT_DIR$/aplicacao.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/init.js" afterPath="$PROJECT_DIR$/init.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sistemaCarro.js" afterPath="$PROJECT_DIR$/sistemaCarro.js" />
     </list>
     <ignored path="CarSystemJS.iws" />
@@ -40,8 +38,8 @@
       <file leaf-file-name="sistemaCarro.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sistemaCarro.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="50" column="6" selection-start-line="50" selection-start-column="6" selection-end-line="50" selection-end-column="6" />
+            <state relative-caret-position="-119">
+              <caret line="14" column="20" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -60,8 +58,8 @@
       <file leaf-file-name="aplicacao.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/aplicacao.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="39" column="37" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="37" />
+            <state relative-caret-position="238">
+              <caret line="101" column="57" selection-start-line="101" selection-start-column="46" selection-end-line="101" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -159,12 +157,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1460211506356</updated>
-      <workItem from="1460211507978" duration="5048000" />
+      <workItem from="1460211507978" duration="5459000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5048000" />
+    <option name="totallyTimeSpent" value="5459000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1370" height="735" extended-state="0" />
@@ -214,16 +212,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/aplicacao.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="39" column="37" selection-start-line="39" selection-start-column="31" selection-end-line="39" selection-end-column="37" />
+        <state relative-caret-position="238">
+          <caret line="101" column="57" selection-start-line="101" selection-start-column="46" selection-end-line="101" selection-end-column="57" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sistemaCarro.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="50" column="6" selection-start-line="50" selection-start-column="6" selection-end-line="50" selection-end-column="6" />
+        <state relative-caret-position="-119">
+          <caret line="14" column="20" selection-start-line="14" selection-start-column="20" selection-end-line="14" selection-end-column="20" />
           <folding />
         </state>
       </provider>

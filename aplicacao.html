@@ -28,9 +28,9 @@
               <div class="form-group container-fluid tab-pane active " id="carro">
                 <div class="form-group">
                   <br>
-                  <label class="col-md-1 control-label" for="marca">Marca</label>
+                  <label class="col-md-1 control-label" for="fabricante">Marca</label>
                   <div class="col-md-11">
-                    <input id="marca" name="marca" type="text" placeholder="Marca" class="form-control input-md" required="" maxlength="50"><br>
+                    <input id="fabricante" name="fabricante" type="text" placeholder="Marca" class="form-control input-md" required="" maxlength="50"><br>
                   </div>
                 </div>
 
@@ -83,15 +83,7 @@
                 <br><br>
                 <table class="table table-hover" id="tblistaCarros">
                   <thead>
-                  <tr>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Ano</th>
-                    <th>Placa</th>
-                    <th>Cor</th>
-                    <th>Valor Diaria</th>
-                    <th>Valor Km</th>
-                  </tr>
+
                   </thead>
                   <tbody>
 
@@ -99,9 +91,10 @@
                 </table>
 
                 <template id="listaCarros">
+
                   <tr>
                     <td scope="row">1</td>
-                    <td class="marca">{{marca}}</td>
+                    <td class="marca">{{fabricante}}</td>
                     <td class="modelo">{{modelo}}</td>
                     <td class="ano">{{ano}}</td>
                     <td class="placa">{{placa}}</td>
