@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Carros</title>
+    <link href="bower_components\bootstrap\dist\css\bootstrap.min.css" rel="stylesheet">
+    <link href="bower_components\bootstrap\dist\css/bootstrap-theme.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="init.js"></script>
+    <script type="text/javascript" src="sistemaCarro.js"></script>  
+    <script src="bower_components\jquery\dist\jquery.min.js"></script>
+    <script src="bower_components\bootstrap\dist\js\bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="bower_components\jquery\dist\jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="bower_components\jquery\dist\jquery.maskedinput.min.js"></script>
+    <script type="text/javascript" src="bower_components\jquery\dist\jquery.validate.min.js"></script>
+    <script type="text/javascript" src="bower_components\jquery\dist\jquery.zebra-datepicker.js"></script>
+
+  </head>
+  <body>
+      <div id="status"></div> 
+      <!--<h1 align="center"><img src="Jaguar.png" width="5%" height="5%"></h1>-->
+      <ul id="lista">
+      </ul>
+      
+      <form id="formNovoCarro" role="form" >     
+        <fieldset>
+          <div class="tabbable">
+            <ul class="nav nav-tabs">
+              <li class="active"><a class="glyphicon glyphicon-plus" href="#carro" data-toggle="tab"> Carro </a></li>
+              <li><a class="glyphicon glyphicon-asterisk" href="#simulacao" data-toggle="tab"> Simulação </a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="form-group container-fluid tab-pane active " id="carro">
+                <div class="form-group">
+                  <br>
+                  <label class="col-md-1 control-label" for="marca">Marca</label>
+                  <div class="col-md-11">
+                    <input id="marca" name="marca" type="text" placeholder="Marca" class="form-control input-md" required="" maxlength="50"><br>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-1 control-label" for="modelo">Modelo</label>
+                  <div class="col-md-11">
+                    <input id="modelo" name="modelo" type="text" placeholder="Modelo" class="form-control input-md" required="" maxlength="50"><br>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-1 control-label" for="ano">Ano</label>
+                  <div class="col-md-11">
+                   <input id="ano" name="ano" type="text" placeholder="Ano" class="form-control input-md" required="" maxlength="4"><br>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-1 control-label" for="cor">Cor</label>
+                  <div class="col-md-11">
+                    <input id="cor" name="cor" type="text" placeholder="Cor" class="form-control input-md" required="" maxlength="20"><br>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-1 control-label" for="placa">Placa</label>
+                  <div class="col-md-11">
+                    <input id="placa" name="placa" type="text" placeholder="Placa" class="form-control input-md" required="" minlength="8" maxlength="8"><br>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-1 control-label" for="valorDiaria">Valor da Diária</label>
+                  <div class="col-md-3">
+                    <input id="valorDiaria" name="valorDiaria" type="number" step="0.01"   placeholder="Valor da Diária" class="form-control input-md" required=""><br>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-1 control-label" for="valorKm">Valor Km</label>
+                  <div class="col-md-3">
+                    <input id="valorKm" name="valorKm" type="number" step="0.01" placeholder="Valor Km" class="form-control input-md" required=""><br>
+                  </div>
+                </div>
+
+                <div class="form-group col-md-12" style="text-align: center;">
+                  <button type="submit" class="btn btn-primary" id="btnAdicionar" >Adicionar</button>
+                  <!--<button type="submit" class="btn btn-default" id="desativaValPlaca">Desativa validação da placa</button>-->
+                </div>
+                <br><br>
+                <table class="table table-hover" id="tblistaCarros">
+                  <thead>
+                  <tr>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Ano</th>
+                    <th>Placa</th>
+                    <th>Cor</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+
+                <template id="listaCarros">
+                  <tr>
+                    <td scope="row">1</td>
+                    <td class="marca">{{teste1}}</td>
+                    <td class="modelo">{{teste2}}</td>
+                    <td class="ano">{{teste3}}</td>
+                    <td class="placa">{{teste3}}</td>
+                    <td class="cor">{{teste3}}</td>
+                  </tr>
+
+                </template>
+
+
+              </div>
+
+              <div class="form-group container-fluid tab-pane " id="simulacao">
+                <br>
+                <label for="carroEscolhido" class="col-md-2 control-label">Carro Escolhido:</label>
+                <div class="col-sm-10">
+                  <select id="carroEscolhido" name="carroEscolhido" class="form-control" placeholder="Carro Escolhido" maxlength="50">
+                    <option value="">Selecione uma opção</option>
+                    <option value="1">Option one</option>
+                    <option value="2">Option two</option>
+                  </select><br>
+                </div>
+
+                <div class="form-group">
+                  <label for="nomeCliente" class="col-md-2 control-label">Nome do Cliente:</label>
+                  <div class="col-sm-10">
+                    <input type="text" id="nomeCliente" class="form-control"  placeholder="Nome do Cliente" maxlength="50"><br>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label class="col-md-2 control-label" for="opcao">Opção</label>
+                  <div class="col-md-10 form-group row" id="opcao">
+                    <label class="radio-inline" for="opcoes">
+                      <input type="radio" class="opcaoSimulacao" name="opcao" id="opcoes" value="dias" checked="checked">
+                      Período
+                    </label>
+                    <label class="radio-inline" for="opcaoKm">
+                      <input type="radio" class="opcaoSimulacao" name="opcao" id="opcaoKm" value="km">
+                      Trajeto
+                    </label>
+                  </div>
+                </div>
+
+                <div class="form-group" id="opcoesPeriodo">
+                  <label for="periodo" class="col-md-2 control-label">Período</label>
+                  <div class="col-md-10 form-group row" id="periodo">
+                    <label class="control-label col-md-1" for="dateInicio">Início</label>
+                    <input class="form-control col-md-3" type="date" id="dateInicio" name="dateInicio">
+                    <label class="control-label col-md-1" for="dateFim">Fim</label>
+                    <input class="form-control col-md-3" type="date" id="dateFim" name="dateFim">
+                  </div>
+                </div>
+
+                <div class="form-group" id="opcoesKm">
+                  <label for="trajeto" class="col-md-2 control-label">Trajeto</label>
+                  <div class="col-md-9 form-group row" id="trajeto">
+                    <label class="control-label col-md-1" for="origem">Origem</label>
+                    <input class="col-md-3" type="text" id="origem" name="origem" placeholder="Origem">
+                    <label class="control-label col-md-1" for="destino">Destino</label>
+                    <input class="col-md-3" type="text" id="destino" name="destino" placeholder="Destino">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="form-group col-md-12" style="text-align: center;">
+                    <button type="submit" class="btn btn-primary" id="btnSimular" >Simular</button>
+                  </div>
+                </div>
+
+                <br><br>
+
+                <table class="table table-hover" id="tblistaSimulacao">
+                  <thead>
+                  <tr>
+                    <th>Nome do Cliente</th>
+                    <th>Opção Dias</th>
+                    <th>Ano</th>
+                    <th>Placa</th>
+                    <th>Cor</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+
+                <template id="listaSimulacao">
+                  <tr>
+                    <td scope="row">1</td>
+                    <td class="marca">{{teste1}}</td>
+                    <td class="modelo">{{teste2}}</td>
+                    <td class="ano">{{teste3}}</td>
+                    <td class="placa">{{teste3}}</td>
+                    <td class="cor">{{teste3}}</td>
+                  </tr>
+
+                </template>
+
+
+
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+
+        <div id="mapholder"></div>
+      </form>
+
+  </body>
+</html>
