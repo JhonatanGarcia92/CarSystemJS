@@ -25,6 +25,9 @@
               <li><a class="glyphicon glyphicon-asterisk" href="#simulacao" data-toggle="tab"> Simulação </a></li>
             </ul>
             <div class="tab-content">
+
+              <input type="hidden" id="codigo">
+
               <div class="form-group container-fluid tab-pane active " id="carro">
                 <div class="form-group">
                   <br>
@@ -65,7 +68,7 @@
                 <div class="form-group">
                   <label class="col-md-1 control-label" for="valorDiaria">Valor da Diária</label>
                   <div class="col-md-3">
-                    <input id="valorDiaria" name="valorDiaria" value="20" type="number" step="0.01"   placeholder="Valor da Diária" class="form-control input-md" required=""><br>
+                    <input id="valorDiaria" name="valorDiaria" value="20" type="number" step="0.01"  placeholder="Valor da Diária" class="form-control input-md" required=""><br>
                   </div>
                 </div>
 
@@ -81,27 +84,28 @@
                   <!--<button type="submit" class="btn btn-default" id="desativaValPlaca">Desativa validação da placa</button>-->
                 </div>
                 <br><br>
-                <table class="table table-hover" id="tblistaCarros">
+                <table class="table table-hover" >
                   <thead>
                     <tr>
-                      <th>Marca</th>
+                      <th>Codigo</th>
+                      <th>Fabricante</th>
                       <th>Modelo</th>
                       <th>Ano</th>
                       <th>Placa</th>
                       <th>Cor</th>
                       <th>Valor Diaria</th>
                       <th>Valor Km</th>
+                      <th>Ações</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="tblistaCarros">
 
                   </tbody>
                 </table>
 
                 <template id="listaCarros">
-
                   <tr>
-                    <td scope="row">1</td>
+                    <td class="codigo">{{codigo}}</td>
                     <td class="fabricante">{{fabricante}}</td>
                     <td class="modelo">{{modelo}}</td>
                     <td class="ano">{{ano}}</td>
@@ -109,8 +113,11 @@
                     <td class="cor">{{cor}}</td>
                     <td class="valorDiaria">{{valorDiaria}}</td>
                     <td class="valorKm">{{valorKm}}</td>
+                    <td>
+                      <button class="btn btn-pen btnEditar">Editar</button>
+                      <button class="btn btn-danger btnExcluir">Excluir</button>
+                    </td>
                   </tr>
-
                 </template>
 
 
@@ -195,8 +202,8 @@
                 <template id="listaSimulacao">
                   <tr>
                     <td scope="row">1</td>
-                    <td class="marca">{{teste1}}</td>
-                    <td class="modelo">{{teste2}}</td>
+                    <td class="nomeCliente">{{nomeCliente}}</td>
+                    <td class="opcaoSimulacao">{{opcaoSimulacao}}</td>
                     <td class="ano">{{teste3}}</td>
                     <td class="placa">{{teste3}}</td>
                     <td class="cor">{{teste3}}</td>

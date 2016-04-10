@@ -12,7 +12,7 @@ var AppCarro = (function SistemaCarro(){
     this.modelo = mod;
     this.ano = ano;
     this.cor = cor;
-    this.valorDiari = vlrdia || 150.00;
+    this.valorDiaria = vlrdia || 150.00;
     this.valorKm = vlrkm || 2.5;
     this.placa = (function(str){
       return str.toUpperCase();
@@ -34,13 +34,14 @@ var AppCarro = (function SistemaCarro(){
     this.dateFim = dtFim;
     this.origem = ori;
     this.destino = dst;
-    this.toString = function(){
-      return this.nomeCliente + ' ' + this.opcao;
-    };
+    // this.toString = function(){
+    //   return this.nomeCliente + ' ' + this.opcao;
+    // };
   }
 
   function novoCarro(event){
     var carro = new Carro(
+        document.getElementById('codigo').value,
         document.getElementById('fabricante').value,
         document.getElementById('modelo').value,
         document.getElementById('ano').value,
@@ -51,6 +52,7 @@ var AppCarro = (function SistemaCarro(){
     );
     carros.push(carro);
     Storage.setItem('carrosList', JSON.stringify(carros));
+    alert("Registro adicionado.");
     imprimeListaCarros();
     event.preventDefault();
   }
@@ -67,6 +69,45 @@ var AppCarro = (function SistemaCarro(){
     );
     console.log(simulacao);
     adicionaSimulacaoALista(simulacao);
+  }
+
+  function editarCarro() {
+    evento.preventDefault();
+    for (var i=0;i<carros.length; i++) {
+      var idCodCarro = parseInt(evento.target.parentNode.parentNode.firstElementChild.firstChild.nodeValue);
+      if (carros[i].codigo == idCodCarro) {
+
+        carros[i].codigo = document.getElementById('codigo').value,
+            carros[i].fabricante = document.getElementById('fabricante').value,
+            carros[i].modelo = document.getElementById('modelo').value,
+            carros[i].ano = document.getElementById('ano').value,
+            carros[i].cor = document.getElementById('cor').value,
+            carros[i].placa = document.getElementById('placa').value,
+            carros[i].valorDiaria = document.getElementById('valorDiaria').value,
+            carros[i].valorKm = document.getElementById('valorKm').value
+        break;
+      }
+    }
+    Storage.setItem('carrosList', JSON.stringify(carros));
+    imprimeListaCarros();
+  }
+
+  function excluirCarro(evento) {
+    // evento.preventDefault();
+    // for (var i=0;i<carros.length; i++) {
+    //   var idCodCarro = parseInt(evento.target.parentNode.parentNode.firstElementChild.firstChild.nodeValue);
+    //   if ( carros[i].codigo == idCodCarro){
+    //     carros.pop(i);
+    //     break;
+    //   }
+    // }
+    //
+    // Storage.setItem('carrosList', JSON.stringify(carros));
+    // imprimeListaCarros();
+
+    carros.splice(indice_selecionado, 1);
+    localStorage.setItem("tbClientes", JSON.stringify(tbClientes));
+    alert("Registro excluído.");
   }
 
   function imprimeListaCarros() {
@@ -109,8 +150,16 @@ var AppCarro = (function SistemaCarro(){
 
   function init(){
     var carrosList = Storage.getItem('carrosList');
+
     if (carrosList!==null) {
       carros = JSON.parse(carrosList);
+      maiorId = -1;
+      for (var i = 0; i < carros.length; i++) {
+        if( carros[i].codigo > maiorId ) {
+          maiorId = carros[i].codigo;
+        }
+      }
+      codCarro = maiorId;
       imprimeListaCarros();
     } else {
       carros = [];
@@ -121,6 +170,16 @@ var AppCarro = (function SistemaCarro(){
 
     var btnAdicionarSimulacao = document.getElementById('btnAdicionarSimulacao');
     btnAdicionarSimulacao.addEventListener('click', novaSimulacao);
+
+    // var btnEditar = document.getElementsByClassName('btnEditar');
+    // btnEditar.addEventListener('click', editarCarro);
+
+    var btnExcluir = document.getElementsByClassName('btnExcluir');
+    for (var i=0; i<btnExcluir.length; i++) {
+      btnExcluir[i].addEventListener('click', excluirCarro);
+    }
+
+
 
     var inputPlaca = document.getElementById('placa');
     inputPlaca.addEventListener('keyup', validaCharsPlaca, false);
