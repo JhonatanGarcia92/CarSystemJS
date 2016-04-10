@@ -15,8 +15,10 @@ function init(){
 		loadScript('bower_components/bootstrap/dist/js/bootstrap.min.js');
 	});
 	loadScript('tpc.js', function(){
-		loadScript('sistemaCarro.js', function(){
-			AppCarro.init();
+		loadScript('simulacoes.js', function() {
+			loadScript('sistemaCarro.js', function(){
+				AppCarro.init();
+			});
 		});
 	});
 
