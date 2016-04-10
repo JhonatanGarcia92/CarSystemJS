@@ -57,9 +57,9 @@ var AppCarro = (function SistemaCarro(){
     event.preventDefault();
   }
 
-  function novaSimulacao(){
+  function novaSimulacao(event){
     var simulacao = new Simulacao(
-        1,
+        document.getElementById('carroEscolhido').value,
         document.getElementById('nomeCliente').value,
         document.querySelector('.opcaoSimulacao:checked').value,
         document.getElementById('dateInicio').value,
@@ -67,8 +67,17 @@ var AppCarro = (function SistemaCarro(){
         document.getElementById('origem').value,
         document.getElementById('destino').value
     );
-    console.log(simulacao);
     adicionaSimulacaoALista(simulacao);
+    Storage.setItem('carrosList', JSON.stringify(carros));
+    event.preventDefault();
+  }
+
+  function excluirSimulacao(simulacao) {
+    // body...
+  }
+
+  function editarSimulacao(simulacao) {
+
   }
 
   function editarCarro() {
@@ -147,6 +156,7 @@ var AppCarro = (function SistemaCarro(){
   }
 
   var carros = [];
+  var simulacoes = [];
 
   function init(){
     var carrosList = Storage.getItem('carrosList');
@@ -165,11 +175,13 @@ var AppCarro = (function SistemaCarro(){
       carros = [];
     }
 
+    SIMULACAO.init(carros);
+
+
+
     var btnAdicionar = document.getElementById('btnAdicionar');
     btnAdicionar.addEventListener('click', novoCarro);
 
-    var btnAdicionarSimulacao = document.getElementById('btnAdicionarSimulacao');
-    btnAdicionarSimulacao.addEventListener('click', novaSimulacao);
 
     // var btnEditar = document.getElementsByClassName('btnEditar');
     // btnEditar.addEventListener('click', editarCarro);
