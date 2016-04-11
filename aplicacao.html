@@ -23,7 +23,7 @@
           <div class="tabbable">
             <ul class="nav nav-tabs">
               <li class="active"><a class="glyphicon glyphicon-plus" href="#carro" data-toggle="tab"> Carro </a></li>
-              <li><a class="glyphicon glyphicon-asterisk" href="#simulacao" data-toggle="tab"> Simulação </a></li>
+              <li><a class="glyphicon glyphicon-asterisk" href="#simulacao" data-toggle="tab" id="abaSimulacao"> Simulação </a></li>
             </ul>
             <div class="tab-content">
 
@@ -89,7 +89,7 @@
                   <thead>
                     <tr>
                       <th>Linha</th>
-                      <th>Id</th>
+                      <th>ID</th>
                       <th>Fabricante</th>
                       <th>Modelo</th>
                       <th>Ano</th>
@@ -97,7 +97,7 @@
                       <th>Cor</th>
                       <th>Valor Diaria</th>
                       <th>Valor Km</th>
-                      <th>Ações</th>
+                      <th style="text-align: center">Ações</th>
                     </tr>
                   </thead>
                   <tbody id="tblistaCarros">
@@ -116,7 +116,7 @@
                     <td class="cor">{{cor}}</td>
                     <td class="valorDiaria">{{valorDiaria}}</td>
                     <td class="valorKm">{{valorKm}}</td>
-                    <td>
+                    <td width="15%">
                       <button class="btn btn-pen btnEditar">Editar</button>
                       <button class="btn btn-danger btnExcluir">Excluir</button>
                     </td>
@@ -125,7 +125,7 @@
               </div>
               <!-- Tela do crud de simulação -->
               <div class="form-group container-fluid tab-pane" id="simulacao">
-
+                <br>
                 <div class="form-group row">
                     <label for="nomeCliente" class="col-md-2 control-label">Nome do Cliente:</label>
                     <div class="col-md-7 row">
@@ -220,7 +220,7 @@
                         <td class="origem">{{origem}}</td>
                         <td class="destino">{{destino}}</td>
                         <td>
-                            <button type="button" class="btn btn EditarSimulacao">Editar</button>
+                            <button type="button" class="btn btnEditarSimulacao">Editar</button>
                             <button type="button" class="btn btn-danger btnExcluirSimulacao">Excluir</button>
                         </td>
                     </tr>

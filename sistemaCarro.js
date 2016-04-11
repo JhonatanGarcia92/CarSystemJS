@@ -2,7 +2,6 @@ var AppCarro = (function SistemaCarro(){
 
   var app = {};
   var codCarro = 0;
-  var idSimulacao = 0;
   var Storage = window.localStorage;
 
   function Carro(fab, mod, ano, cor, pla, vlrdia, vlrkm){
@@ -17,26 +16,6 @@ var AppCarro = (function SistemaCarro(){
     this.placa = (function(str){
       return str.toUpperCase();
     })(pla);
-    /*
-     this.toString = function(){
-     return this.fabricante + ' ' + this.modelo + ' ' + this.ano + ' ' + this.cor + ' (' + this.placa + ')';
-     };
-     */
-  }
-
-  function Simulacao(codCarro, cliNome, op, dtInicio, dtFim, ori, dst){
-    idSimulacao++;
-    this.id = idSimulacao;
-    this.carroEscolhido = codCarro;
-    this.nomeCliente = cliNome;
-    this.opcao = op;
-    this.dateInicio = dtInicio;
-    this.dateFim = dtFim;
-    this.origem = ori;
-    this.destino = dst;
-    // this.toString = function(){
-    //   return this.nomeCliente + ' ' + this.opcao;
-    // };
   }
 
   function novoCarro(event){
@@ -52,32 +31,9 @@ var AppCarro = (function SistemaCarro(){
     );
     carros.push(carro);
     Storage.setItem('carrosList', JSON.stringify(carros));
-    alert("Registro adicionado.");
     imprimeListaCarros();
+    alert("Registro adicionado.");
     event.preventDefault();
-  }
-
-  function novaSimulacao(event){
-    var simulacao = new Simulacao(
-        document.getElementById('carroEscolhido').value,
-        document.getElementById('nomeCliente').value,
-        document.querySelector('.opcaoSimulacao:checked').value,
-        document.getElementById('dateInicio').value,
-        document.getElementById('dateFim').value,
-        document.getElementById('origem').value,
-        document.getElementById('destino').value
-    );
-    adicionaSimulacaoALista(simulacao);
-    Storage.setItem('carrosList', JSON.stringify(carros));
-    event.preventDefault();
-  }
-
-  function excluirSimulacao(simulacao) {
-    // body...
-  }
-
-  function editarSimulacao(simulacao) {
-
   }
 
   function editarCarro() {
@@ -131,18 +87,6 @@ var AppCarro = (function SistemaCarro(){
     }
   }
 
-  function adicionaSimulacaoALista(simulacao){
-    var lista = document.getElementById('tblistaSimulacao');
-    lista.textContent = '';
-    for (var i = 0; i < carros.length; i++) {
-      var carro = carros[i];
-      var modelo = document.getElementById('listaSimulacao');
-      var copia = modelo.content.firstElementChild.cloneNode(true);
-      TPC.replaceWithData(copia, carro);
-      lista.appendChild(copia);
-    }
-  }
-
   function validaCharsPlaca(){
     //console.log(event);
     //console.log(event.keyCode);
@@ -182,7 +126,6 @@ var AppCarro = (function SistemaCarro(){
     var btnAdicionar = document.getElementById('btnAdicionar');
     btnAdicionar.addEventListener('click', novoCarro);
 
-
     // var btnEditar = document.getElementsByClassName('btnEditar');
     // btnEditar.addEventListener('click', editarCarro);
 
@@ -190,8 +133,6 @@ var AppCarro = (function SistemaCarro(){
     for (var i=0; i<btnExcluir.length; i++) {
       btnExcluir[i].addEventListener('click', excluirCarro);
     }
-
-
 
     var inputPlaca = document.getElementById('placa');
     inputPlaca.addEventListener('keyup', validaCharsPlaca, false);

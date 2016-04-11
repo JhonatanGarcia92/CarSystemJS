@@ -11,8 +11,8 @@ function loadScript(url, callback){
 }
 
 function init(){
-	loadScript('bower_components/jquery/dist/jquery.min.js', function(){
-		loadScript('bower_components/bootstrap/dist/js/bootstrap.min.js');
+	loadScript('lib/jquery/dist/jquery.min.js', function(){
+		loadScript('lib/bootstrap/dist/js/bootstrap.min.js');
 	});
 	loadScript('tpc.js', function(){
 		loadScript('simulacoes.js', function() {
