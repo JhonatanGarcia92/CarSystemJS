@@ -1,17 +1,21 @@
 // Autor: Carlos Nantes
 var SIMULACAO = (function(){
-    var modulo = {};
-  
+    var modulo = {}
     var Storage  = window.localStorage;
+    var carros = [];
+    var simulacoes = [];
+    var idSimulacao = 0;
+    var simulacaoEmEdicao;
 
-    modulo._carros = [];
-    modulo._simulacoes = [];
-    modulo._idSimulacao = 0;
+    //Simula jQuery $()
+    function $$(id){
+        return document.getElementById(id);
+    }
 
-    modulo.simulacaoFactory = function (codCarro, cliNome, op, dtInicio, dtFim, ori, dst){
-        modulo._idSimulacao++;
+    function Simulacao (codCarro, cliNome, op, dtInicio, dtFim, ori, dst){
+        idSimulacao++;
         simulacao = {}
-        simulacao.id = modulo._idSimulacao;
+        simulacao.id = idSimulacao;
         simulacao.carroEscolhido = codCarro;
         simulacao.nomeCliente = cliNome;
         simulacao.opcao = op;
@@ -21,196 +25,217 @@ var SIMULACAO = (function(){
         simulacao.destino = dst;
         simulacao.toString = function(){
           return this.nomeCliente + ' ' + this.opcao;
-        };
+        }
         return simulacao;
-    };
+    }
     
-    modulo.carregaDoLocalStorage = function(){
+    function carregaDoLocalStorage (){
         var simulacoesList = Storage.getItem('simulacoes');
         if (simulacoesList!=null) {
-          modulo._simulacoes = JSON.parse(simulacoesList);
+          simulacoes = JSON.parse(simulacoesList);
         }
-        var idSimulacao = Storage.getItem('idSimulacao');
-        if(idSimulacao !== null){
-            modulo._idSimulacao = idSimulacao;
+        var idSimulacaoStorage = Storage.getItem('idSimulacao');
+        if(idSimulacaoStorage !== null){
+            idSimulacao = idSimulacaoStorage;
         }
-    };
+    }
 
-    modulo.init = function(carros){
-        modulo._carros = carros;
-        modulo.carregaDoLocalStorage();
+    //Método público. Os outros são privados.
+    modulo.init = function (carrosCadastrados){
+        carros = carrosCadastrados;
+        carregaDoLocalStorage();
+        var abaSimulacao = $$('abaSimulacao');
+        abaSimulacao.addEventListener('click', carregaTelaSimulacao);
+    }
 
-        var abaSimulacao = document.getElementById('abaSimulacao');
-        abaSimulacao.addEventListener('click', modulo.carregaTelaSimulacao);
-    };
-
-    modulo.carregaTelaSimulacao = function(){
-        modulo.limpaFormSimulacao();
-        modulo.mostraCarrosNaTela();
-        modulo.mostraSimulacoesNatela();
-        modulo.carregaEventos();
-        document.getElementById('btnAdicionarSimulacao').classList.remove('hide');
-        document.getElementById('btnSalvarSimulacao').classList.add('hide');
-        document.getElementById('btnCancelarSimulacao').classList.add('hide');
-    };
+    function carregaTelaSimulacao(){
+        limpaFormSimulacao();
+        mostraCarrosNaTela();
+        mostraSimulacoesNatela();
+        carregaEventos();
+        $$('btnAdicionarSimulacao').classList.remove('hide');
+        $$('btnSalvarSimulacao').classList.add('hide');
+        $$('btnCancelarSimulacao').classList.add('hide');
+    }
     
-    modulo.mostraCarrosNaTela = function(){
+    function mostraCarrosNaTela(){
         console.log('mostraCarrosNaTela');
-        var lista = document.getElementById('carroEscolhido');
+        var lista = $$('carroEscolhido');
         lista.textContent = '';
-        for (var i = 0; i < modulo._carros.length; i++) {
-            var carro = modulo._carros[i];
-            var modelo = document.getElementById('opcoesCarro');
+        for (var i = 0; i < carros.length; i++) {
+            var carro = carros[i];
+            var modelo = $$('opcoesCarro');
             var copia = modelo.content.firstElementChild.cloneNode(true);
             copia.value = carro.codigo;
             TPC.replaceWithData(copia, carro);
             lista.appendChild(copia);
         }
-    };
+    }
 
-    modulo.carregaEventos = function(){
-        var btnAdicionarSimulacao = document.getElementById('btnAdicionarSimulacao');
-        btnAdicionarSimulacao.addEventListener('click', modulo.clickAdicionarSimulacao);
+    function carregaEventos (){
+        var btnAdicionarSimulacao = $$('btnAdicionarSimulacao');
+        btnAdicionarSimulacao.addEventListener('click', clickAdicionarSimulacao);
+        var btnSalvarSimulacao = $$('btnSalvarSimulacao');
+        btnSalvarSimulacao.addEventListener('click', clickSalvarSimulacao);
+        var btnCancelarSimulacao = $$('btnCancelarSimulacao');
+        btnCancelarSimulacao.addEventListener('click', clickCancelarSimulacao);
+    }
 
-        var btnSalvarSimulacao = document.getElementById('btnSalvarSimulacao');
-        btnSalvarSimulacao.addEventListener('click', modulo.clickSalvarSimulacao);
-
-        var btnCancelarSimulacao = document.getElementById('btnCancelarSimulacao');
-        btnCancelarSimulacao.addEventListener('click', modulo.clickCancelarSimulacao);
-    };
-
-    modulo.clickAdicionarSimulacao = function(evento){
+    function clickAdicionarSimulacao (evento){
         console.log('clickAdicionarSimulacao');
         evento.preventDefault();
-        var simulacao = modulo.novaSimulacao();
-        modulo.adicionarSimulacao(simulacao);
-        modulo.limpaFormSimulacao();
-        modulo.mostraSimulacoesNatela();
-    };
+        var simulacao = novaSimulacao();
+        if( preenchimentoCorreto() ){
+            adicionarSimulacao(simulacao);
+            limpaFormSimulacao();
+            mostraSimulacoesNatela();
+        }else{
+            mostraMensagemDePreenchimentoIncorreto();
+        }
+    }
 
-    modulo.clickExcluirSimulacao = function(evento){
+    function mostraMensagemDePreenchimentoIncorreto(){
+        camposInvalidos = document.querySelectorAll('#formNovaSimulacao .form-control:invalid');
+        mensagem = "Campos Preenchidos Incorretamente: \n\n";
+        for( var i=0, length = camposInvalidos.length; i < length; i++){
+            campo = camposInvalidos[i];
+            label = document.querySelector('#formNovaSimulacao label[for='+campo.id+']').innerText;
+            mensagem = mensagem + label + ":  "+ campo.validationMessage + "\n";
+        }
+        alert(mensagem);
+    }
+
+    function preenchimentoCorreto(){
+      return $$('formNovaSimulacao').checkValidity();
+    }
+
+    function clickExcluirSimulacao (evento){
         console.log('clickExcluirSimulacao');
         evento.preventDefault();
-        idDaLista = modulo._descobreIdNoArrayDeSimulacoes(evento);
-        modulo.excluirSimulacao(idDaLista);
-        modulo.mostraSimulacoesNatela();
-    };
+        idDaLista = descobreIdNoArrayDeSimulacoes(evento);
+        simulacaoAExcluir = simulacoes[idDaLista];
+        if( simulacaoEmEdicao == simulacaoAExcluir ){
+            desejaExcluir = confirm('Esta simulação está em edição. Tem certeza que deseja excluir?');
+            if(desejaExcluir)
+                limpaFormSimulacao();
+        }else{
+            desejaExcluir = confirm('Tem certeza que deseja excluir?');
+        }
+        
+        if( desejaExcluir ){
+            excluirSimulacao(idDaLista);
+            mostraSimulacoesNatela();
+        }
+    }
 
-    modulo.clickEditarSimulacao = function(evento){
+    function clickEditarSimulacao (evento){
         console.log('clickEditarSimulacao');
         evento.preventDefault();
-        idDaLista = modulo._descobreIdNoArrayDeSimulacoes(evento);
-        simulacaoEscolhida = modulo._simulacoes[idDaLista];
-        modulo.carregarSimulacaoNoForm(simulacaoEscolhida);
-        modulo._idListaDaSimulacaoEscolhida = idDaLista;
-        document.getElementById('btnAdicionarSimulacao').classList.add('hide');
-        document.getElementById('btnSalvarSimulacao').classList.remove('hide');
-        document.getElementById('btnCancelarSimulacao').classList.remove('hide');
-    };
+        idDaLista = descobreIdNoArrayDeSimulacoes(evento);
+        simulacaoEmEdicao = simulacoes[idDaLista];
+        carregarSimulacaoNoForm(simulacaoEmEdicao);
+        $$('btnAdicionarSimulacao').classList.add('hide');
+        $$('btnSalvarSimulacao').classList.remove('hide');
+        $$('btnCancelarSimulacao').classList.remove('hide');
+    }
 
-    modulo.clickCancelarSimulacao = function(evento){
+    function clickCancelarSimulacao (evento){
         console.log('clickCancelarSimulacao');
         evento.preventDefault();
-        modulo.limpaFormSimulacao();
-        document.getElementById('btnAdicionarSimulacao').classList.remove('hide');
-        document.getElementById('btnSalvarSimulacao').classList.add('hide');
-        document.getElementById('btnCancelarSimulacao').classList.add('hide');
-    };  
+        limpaFormSimulacao();
+    }  
 
-    modulo.clickSalvarSimulacao = function(evento){
+    function clickSalvarSimulacao (evento){
         console.log('clickSalvarSimulacao');
         evento.preventDefault();
-        modulo.salvarEdicao();
-        modulo.limpaFormSimulacao();
-        modulo.mostraSimulacoesNatela();
-        document.getElementById('btnAdicionarSimulacao').classList.remove('hide');
-        document.getElementById('btnSalvarSimulacao').classList.add('hide');
-        document.getElementById('btnCancelarSimulacao').classList.add('hide');
-    };
+        salvarEdicao(simulacaoEmEdicao);
+        limpaFormSimulacao();
+        mostraSimulacoesNatela();
+     }
 
-    modulo.salvarEdicao = function(){
-        idDaLista = modulo._idListaDaSimulacaoEscolhida;
-        simulacao = modulo._simulacoes[idDaLista];
-        simulacao.carroEscolhido =document.getElementById('carroEscolhido').value;
-        simulacao.nomeCliente = document.getElementById('nomeCliente').value;
+    function salvarEdicao (simulacao){
+        simulacao.carroEscolhido =$$('carroEscolhido').value;
+        simulacao.nomeCliente = $$('nomeCliente').value;
         simulacao.opcao = document.querySelector('.opcaoSimulacao:checked').value;
-        simulacao.dateInicio = document.getElementById('dateInicio').value;
-        simulacao.dateFim = document.getElementById('dateFim').value;
-        simulacao.origem = document.getElementById('origem').value;
-        simulacao.destino = document.getElementById('destino').value;
-    };
+        simulacao.dateInicio = $$('dateInicio').value;
+        simulacao.dateFim = $$('dateFim').value;
+        simulacao.origem = $$('origem').value;
+        simulacao.destino = $$('destino').value;
+    }
 
-    modulo._descobreIdNoArrayDeSimulacoes = function(evento){
+    function descobreIdNoArrayDeSimulacoes (evento){
         tdRow = evento.target.parentNode.parentNode.querySelector('.row');
         idDaLista = parseInt( tdRow.innerText ) - 1;
         return idDaLista;
-    };
+    }
 
-    modulo.mostraSimulacoesNatela = function(){
-        var lista = document.getElementById('tblistaSimulacao');
+    function mostraSimulacoesNatela (){
+        var lista = $$('tblistaSimulacao');
         lista.textContent = '';
-        for (var i = 0; i < modulo._simulacoes.length; i++) {
-            var simulacao = modulo._simulacoes[i];
-            var modelo = document.getElementById('listaSimulacao');
+        for (var i = 0; i < simulacoes.length; i++) {
+            var simulacao = simulacoes[i];
+            var modelo = $$('listaSimulacao');
             var copia = modelo.content.firstElementChild.cloneNode(true);
             TPC.replaceWithData(copia, simulacao);
             copia.querySelector('.row').innerText = i + 1;
-            copia.querySelector('.btnEditarSimulacao').addEventListener('click', modulo.clickEditarSimulacao);
-            copia.querySelector('.btnExcluirSimulacao').addEventListener('click', modulo.clickExcluirSimulacao);
+            copia.querySelector('.btnEditarSimulacao').addEventListener('click', clickEditarSimulacao);
+            copia.querySelector('.btnExcluirSimulacao').addEventListener('click', clickExcluirSimulacao);
             lista.appendChild(copia);
         }
-    };
+    }
 
-    modulo.limpaFormSimulacao = function(){
-        document.getElementById('nomeCliente').value = '';
-        document.getElementById('carroEscolhido').selectedIndex = 0;
-        document.getElementById('opcoes').checked = true;
-        document.getElementById('opcoesKm').checked = false;
-        document.getElementById('dateInicio').value = '';
-        document.getElementById('dateFim').value = '';
-        document.getElementById('origem').value = '';
-        document.getElementById('destino').value = '';
-    };
+    function limpaFormSimulacao (){
+        $$('nomeCliente').value = '';
+        $$('carroEscolhido').selectedIndex = 0;
+        $$('opcoes').checked = true;
+        $$('opcoesKm').checked = false;
+        $$('dateInicio').value = '';
+        $$('dateFim').value = '';
+        $$('origem').value = '';
+        $$('destino').value = '';
+        $$('btnAdicionarSimulacao').classList.remove('hide');
+        $$('btnSalvarSimulacao').classList.add('hide');
+        $$('btnCancelarSimulacao').classList.add('hide');
+    }
 
-    modulo.novaSimulacao = function() {
-        var simulacao = modulo.simulacaoFactory(
-            document.getElementById('carroEscolhido').value,
-            document.getElementById('nomeCliente').value,
+    function novaSimulacao () {
+        var simulacao = new Simulacao(
+            $$('carroEscolhido').value,
+            $$('nomeCliente').value,
             document.querySelector('.opcaoSimulacao:checked').value,
-            document.getElementById('dateInicio').value,
-            document.getElementById('dateFim').value,
-            document.getElementById('origem').value,
-            document.getElementById('destino').value
+            $$('dateInicio').value,
+            $$('dateFim').value,
+            $$('origem').value,
+            $$('destino').value
         );
         return simulacao;
-    };
+    }
 
-    modulo.carregarSimulacaoNoForm = function(simulacao){        
-        document.getElementById('carroEscolhido').value = simulacao.carroEscolhido;
-        document.getElementById('nomeCliente').value = simulacao.nomeCliente;
+    function carregarSimulacaoNoForm (simulacao){        
+        $$('carroEscolhido').value = simulacao.carroEscolhido;
+        $$('nomeCliente').value = simulacao.nomeCliente;
         if( simulacao.opcao == 'dias' ){
-            document.getElementById('opcao').checked = true;
+            $$('opcao').checked = true;
         }
         if( simulacao.opcao == 'km' ){
-            document.getElementById('opcaoKm').checked = true;
+            $$('opcaoKm').checked = true;
         }
-        document.getElementById('dateInicio').value = simulacao.dateInicio;
-        document.getElementById('dateFim').value = simulacao.dateFim
-        document.getElementById('origem').value = simulacao.origem ;
-        document.getElementById('destino').value = simulacao.destino;
-    };
+        $$('dateInicio').value = simulacao.dateInicio;
+        $$('dateFim').value = simulacao.dateFim
+        $$('origem').value = simulacao.origem ;
+        $$('destino').value = simulacao.destino;
+    }
 
-    modulo.excluirSimulacao = function(idDaLista){
-        modulo._simulacoes.splice(idDaLista, 1);
-        Storage.setItem('simulacoes', JSON.stringify(modulo._simulacoes));
-    };
+    function excluirSimulacao (idDaLista){
+        simulacoes.splice(idDaLista, 1);
+        Storage.setItem('simulacoes', JSON.stringify(simulacoes));
+    }
 
-    modulo.adicionarSimulacao = function(simulacao){
-        modulo._simulacoes.push(simulacao);
-        Storage.setItem('simulacoes', JSON.stringify(modulo._simulacoes));
-        Storage.setItem('idSimulacao', JSON.stringify(modulo._idSimulacao));
-    };
-
+    function adicionarSimulacao (simulacao){
+        simulacoes.push(simulacao);
+        Storage.setItem('simulacoes', JSON.stringify(simulacoes));
+        Storage.setItem('idSimulacao', JSON.stringify(idSimulacao));
+    }
 
     return modulo;
 })();

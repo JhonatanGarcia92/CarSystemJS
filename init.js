@@ -18,6 +18,7 @@ function init(){
 		loadScript('simulacoes.js', function() {
 			loadScript('sistemaCarro.js', function(){
 				AppCarro.init();
+				SIMULACAO.init(AppCarro.getCarros());
 			});
 		});
 	});
