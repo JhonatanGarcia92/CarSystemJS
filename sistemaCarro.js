@@ -2,6 +2,9 @@ var AppCarro = (function SistemaCarro(){
 
   var app = {};
   var codCarro = 0;
+
+  var carros = [];
+
   var Storage = window.localStorage;
 
   function Carro(fab, mod, ano, cor, pla, vlrdia, vlrkm){
@@ -75,6 +78,7 @@ var AppCarro = (function SistemaCarro(){
     alert("Registro excluído.");
   }
 
+
   function imprimeListaCarros() {
     var lista = document.getElementById('tblistaCarros');
     lista.textContent = '';
@@ -88,8 +92,6 @@ var AppCarro = (function SistemaCarro(){
   }
 
   function validaCharsPlaca(){
-    //console.log(event);
-    //console.log(event.keyCode);
     var inputPlaca = document.getElementById('placa');
     inputPlaca.value = inputPlaca.value.replace(/[^a-z0-9]/gmi,'');
   }
@@ -98,9 +100,6 @@ var AppCarro = (function SistemaCarro(){
     var inputPlaca = document.getElementById('placa');
     inputPlaca.removeEventListener('keyup', validaCharsPlaca, false);
   }
-
-  var carros = [];
-  var simulacoes = [];
 
   function init(){
     var carrosList = Storage.getItem('carrosList');
@@ -118,13 +117,9 @@ var AppCarro = (function SistemaCarro(){
     } else {
       carros = [];
     }
-
-    SIMULACAO.init(carros);
-
-
-
     var btnAdicionar = document.getElementById('btnAdicionar');
     btnAdicionar.addEventListener('click', novoCarro);
+
 
     // var btnEditar = document.getElementsByClassName('btnEditar');
     // btnEditar.addEventListener('click', editarCarro);
@@ -134,19 +129,17 @@ var AppCarro = (function SistemaCarro(){
       btnExcluir[i].addEventListener('click', excluirCarro);
     }
 
+
     var inputPlaca = document.getElementById('placa');
     inputPlaca.addEventListener('keyup', validaCharsPlaca, false);
-
-    // var inputDesativar = document.getElementById('desativaValPlaca');
-    // inputDesativar.addEventListener('keyup', desativarValidacaoDaPlaca);
   }
 
   app.init = function(){
     console.log('AppCarro.init');
     init();
   };
-  app.getCatalog = function(){
-    console.log('AppCarro.getCatalog');
+  app.getCarros = function(){
+    console.log('AppCarro.getCarros');
     return carros;
   };
 
