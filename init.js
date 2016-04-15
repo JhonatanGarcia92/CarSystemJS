@@ -15,10 +15,11 @@ function init(){
 		loadScript('lib/bootstrap/dist/js/bootstrap.min.js');
 	});
 	loadScript('tpc.js', function(){
-		loadScript('simulacoes.js', function() {
-			loadScript('sistemaCarro.js', function(){
-				AppCarro.init();
-				SIMULACAO.init(AppCarro.getCarros());
+		loadScript('carros.js', function(){
+			loadScript('simulacoes.js', function() {
+					CARRO.init();
+					CARRO.carregaTela();
+					SIMULACAO.init(CARRO.getCarros());
 			});
 		});
 	});

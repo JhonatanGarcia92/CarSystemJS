@@ -19,7 +19,7 @@
     </ul>
     <div class="tabbable">
         <ul class="nav nav-tabs">
-            <li class="active"><a class="glyphicon glyphicon-plus" href="#carro" data-toggle="tab"> Carro </a></li>
+            <li class="active"><a class="glyphicon glyphicon-plus" href="#carro" data-toggle="tab"  id="abaCarro"> Carro </a></li>
             <li><a class="glyphicon glyphicon-asterisk" href="#simulacao" data-toggle="tab" id="abaSimulacao"> Simulação </a></li>
         </ul>
         <div class="tab-content">
@@ -28,64 +28,71 @@
                 <form id="formNovoCarro" role="form">
                     <div class="form-group">
                         <br>
-                        <label class="col-md-1 control-label" for="fabricante">Marca</label>
+                        <label class="col-md-1 control-label" for="fabricante">Fabricante</label>
                         <div class="col-md-11">
-                            <input id="fabricante" name="fabricante" value="teste" type="text" placeholder="Marca" class="form-control input-md" required="" maxlength="50">
+                            <input id="fabricante" name="fabricante" placeholder="Fabricante" type="text"class="form-control input-md" required="" maxlength="50">
                             <br>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-1 control-label" for="modelo">Modelo</label>
                         <div class="col-md-11">
-                            <input id="modelo" name="modelo" value="teste" type="text" placeholder="Modelo" class="form-control input-md" required="" maxlength="50">
+                            <input id="modelo" name="modelo" type="text" placeholder="Modelo" class="form-control input-md" required="" maxlength="50">
                             <br>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-1 control-label" for="ano">Ano</label>
                         <div class="col-md-11">
-                            <input id="ano" name="ano" type="text" value="teste" placeholder="Ano" class="form-control input-md" required="" maxlength="4">
+                            <input id="ano" name="ano" type="text" placeholder="Ano" class="form-control input-md" required="" maxlength="4">
                             <br>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-1 control-label" for="cor">Cor</label>
                         <div class="col-md-11">
-                            <input id="cor" name="cor" type="text" value="teste" placeholder="Cor" class="form-control input-md" required="" maxlength="20">
+                            <input id="cor" name="cor" type="text" placeholder="Cor" class="form-control input-md" required="" maxlength="20">
                             <br>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-1 control-label" for="placa">Placa</label>
                         <div class="col-md-11">
-                            <input id="placa" name="placa" type="text" value="teste" placeholder="Placa" class="form-control input-md" required="" minlength="8" maxlength="8">
+                            <input id="placa" name="placa" type="text" placeholder="Placa" class="form-control input-md" required="" minlength="8" maxlength="8">
                             <br>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-1 control-label" for="valorDiaria">Valor da Diária</label>
                         <div class="col-md-3">
-                            <input id="valorDiaria" name="valorDiaria" value="20" type="number" step="0.01" placeholder="Valor da Diária" class="form-control input-md" required="">
+                            <input id="valorDiaria" name="valorDiaria" type="number" step="0.01" placeholder="Valor da Diária" class="form-control input-md" required="">
                             <br>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-1 control-label" for="valorKm">Valor Km</label>
                         <div class="col-md-3">
-                            <input id="valorKm" name="valorKm" type="number" value="20" step="0.01" placeholder="Valor Km" class="form-control input-md" required="">
+                            <input id="valorKm" name="valorKm" type="number" step="0.01" placeholder="Valor Km" class="form-control input-md" required="">
                             <br>
                         </div>
                     </div>
-                    <div class="form-group col-md-12" style="text-align: center;">
-                        <button type="button" class="btn btn-primary" id="btnAdicionar">Adicionar</button>
-                        <!--<button type="submit" class="btn btn-default" id="desativaValPlaca">Desativa validação da placa</button>-->
+                    <div class="form-group row">
+                        <div class="form-group col-md-12" style="text-align: center;">
+                            <button type="button" class="btn btn-primary" id="btnAdicionarCarro">Adicionar</button>
+                            <button type="button" class="btn btn-primary hide" id="btnSalvarCarro">Salvar</button>
+                            <button type="button" class="btn btn-primary hide" id="btnCancelarCarro">Cancelar</button>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
                 </form>
-                </div>
                 <br>
                 <br>
-                <table class="table table-hover" id="tblistaCarros">
+                <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th>Linha</th>
+                            <th>Código</th>
                             <th>Marca</th>
                             <th>Modelo</th>
                             <th>Ano</th>
@@ -93,14 +100,16 @@
                             <th>Cor</th>
                             <th>Valor Diaria</th>
                             <th>Valor Km</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tblistaCarros">
                     </tbody>
                 </table>
                 <template id="listaCarros">
                     <tr>
-                        <td scope="row">1</td>
+                        <td class="row">{{row}}</td>
+                        <td class="codCarro">{{codCarro}}</td>
                         <td class="fabricante">{{fabricante}}</td>
                         <td class="modelo">{{modelo}}</td>
                         <td class="ano">{{ano}}</td>
@@ -108,6 +117,10 @@
                         <td class="cor">{{cor}}</td>
                         <td class="valorDiaria">{{valorDiaria}}</td>
                         <td class="valorKm">{{valorKm}}</td>
+                          <td>
+                            <button type="button" class="btn btnEditarCarro">Editar</button>
+                            <button type="button" class="btn btn-danger btnExcluirCarro">Excluir</button>
+                        </td>
                     </tr>
                 </template>
             </div>
