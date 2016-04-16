@@ -12,7 +12,7 @@ var SIMULACAO = (function(){
         return document.getElementById(id);
     }
 
-    function Simulacao (codCarro, cliNome, op, dtInicio, dtFim, ori, dst){
+    function Simulacao (codCarro, cliNome, op, dtInicio, dtFim, ori, dst, distancia){
         idSimulacao++;
         simulacao = {}
         simulacao.id = idSimulacao;
@@ -23,6 +23,7 @@ var SIMULACAO = (function(){
         simulacao.dateFim = dtFim;
         simulacao.origem = ori;
         simulacao.destino = dst;
+        simulacao.distancia = distancia;
         simulacao.toString = function(){
           return this.nomeCliente + ' ' + this.opcao;
         }
@@ -79,19 +80,40 @@ var SIMULACAO = (function(){
         btnSalvarSimulacao.addEventListener('click', clickSalvarSimulacao);
         var btnCancelarSimulacao = $$('btnCancelarSimulacao');
         btnCancelarSimulacao.addEventListener('click', clickCancelarSimulacao);
+        $$('btnCalcularDistancia').addEventListener('click', clickCalcularDistancia);
+        $$('btnMeuLocal').addEventListener('click', clickMeuLocal);
+    }
+
+    function clickMeuLocal(evento){
+        evento.preventDefault();
+        var campoOrigem = $$('origem');
+        GEOLOCALIZACAO.obterMeuLocal( campoOrigem );
     }
 
     function clickAdicionarSimulacao (evento){
-        console.log('clickAdicionarSimulacao');
         evento.preventDefault();
         var simulacao = novaSimulacao();
         if( preenchimentoCorreto() ){
             adicionarSimulacao(simulacao);
             limpaFormSimulacao();
             mostraSimulacoesNatela();
+
+            new PNotify({
+                title: 'Simulação',
+                text: 'Salvo com sucesso.',
+                type: 'success'
+            });
         }else{
             mostraMensagemDePreenchimentoIncorreto();
         }
+    }
+
+    function clickCalcularDistancia(evento){
+        evento.preventDefault();
+        var campoOrigem = $$('origem');
+        var campoDestino = $$('destino');
+        var campoDistancia = $$('distancia');
+        GEOLOCALIZACAO.calculaDistanciaDoPercurso( campoOrigem, campoDestino, campoDistancia );
     }
 
     function mostraMensagemDePreenchimentoIncorreto(){
@@ -102,7 +124,11 @@ var SIMULACAO = (function(){
             label = document.querySelector('#formNovaSimulacao label[for='+campo.id+']').innerText;
             mensagem = mensagem + label + ":  "+ campo.validationMessage + "\n";
         }
-        alert(mensagem);
+        new PNotify({
+            title: 'Campos Obrigatórios',
+            text: mensagem,
+            type: 'error'
+        });
     }
 
     function preenchimentoCorreto(){
@@ -110,16 +136,53 @@ var SIMULACAO = (function(){
     }
 
     function clickExcluirSimulacao (evento){
-        console.log('clickExcluirSimulacao');
         evento.preventDefault();
         idDaLista = descobreIdNoArrayDeSimulacoes(evento);
         simulacaoAExcluir = simulacoes[idDaLista];
         if( simulacaoEmEdicao == simulacaoAExcluir ){
-            desejaExcluir = confirm('Esta simulação está em edição. Tem certeza que deseja excluir?');
+            desejaExcluir = new PNotify({
+                title: 'Excluir Simulação',
+                text: 'Esta simulação está em edição. Tem certeza que deseja excluir?',
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                confirm: {
+                    confirm: true
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                history: {
+                    history: false
+                }
+            }).get().on('pnotify.confirm', function(){
+                alert('Excluído com sucesso.');
+            }).on('pnotify.cancel', function(){
+                alert('Exclusão cancelada.');
+            });
             if(desejaExcluir)
                 limpaFormSimulacao();
         }else{
-            desejaExcluir = confirm('Tem certeza que deseja excluir?');
+            desejaExcluir = new PNotify({
+                title: 'Excluir Carro',
+                text: 'Tem certeza que deseja excluir?',
+                icon: 'glyphicon glyphicon-question-sign',
+                hide: false,
+                confirm: {
+                    confirm: true
+                },
+                buttons: {
+                    closer: false,
+                    sticker: false
+                },
+                history: {
+                    history: false
+                }
+            }).get().on('pnotify.confirm', function(){
+                alert('Excluído com sucesso.');
+            }).on('pnotify.cancel', function(){
+                alert('Exclusão cancelada.');
+            });
         }
         
         if( desejaExcluir ){
@@ -161,6 +224,7 @@ var SIMULACAO = (function(){
         simulacao.dateFim = $$('dateFim').value;
         simulacao.origem = $$('origem').value;
         simulacao.destino = $$('destino').value;
+        simulacao.distancia = $$('distancia').value;
     }
 
     function descobreIdNoArrayDeSimulacoes (evento){
@@ -193,6 +257,7 @@ var SIMULACAO = (function(){
         $$('dateFim').value = '';
         $$('origem').value = '';
         $$('destino').value = '';
+        $$('distancia').value = '';
         $$('btnAdicionarSimulacao').classList.remove('hide');
         $$('btnSalvarSimulacao').classList.add('hide');
         $$('btnCancelarSimulacao').classList.add('hide');
@@ -206,7 +271,8 @@ var SIMULACAO = (function(){
             $$('dateInicio').value,
             $$('dateFim').value,
             $$('origem').value,
-            $$('destino').value
+            $$('destino').value,
+            $$('distancia').value
         );
         return simulacao;
     }
@@ -224,6 +290,7 @@ var SIMULACAO = (function(){
         $$('dateFim').value = simulacao.dateFim
         $$('origem').value = simulacao.origem ;
         $$('destino').value = simulacao.destino;
+        $$('distancia').value = simulacao.distancia;
     }
 
     function excluirSimulacao (idDaLista){
